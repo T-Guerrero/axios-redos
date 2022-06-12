@@ -1,9 +1,63 @@
-// Src: https://github.com/axios/axios/commit/5b457116e31db0e88fede6c428e969e87f290929
-function oldTrim(str) {
+import { IsWhiteSpaceOrLineTerminator } from "./util.js";
+
+/*
+oldTrim implements old axios implementation.
+newTrimJs implements the current axios implementation.
+Src: https://github.com/axios/axios/commit/5b457116e31db0e88fede6c428e969e87f290929
+*/
+ function oldTrim(str) {
   return str.replace(/^\s*/, '').replace(/\s*$/, '');
 }
-function newTrim(str) {
+function newTrimJs(str) {
   return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '');
+}
+
+/*
+Implements the built-in javascript trim
+function in order to understand what it does.
+
+Src: https://github.com/nodejs/node/blob/e46c680bf2b211bbd52cf959ca17ee98c7f657f5/deps/v8/src/builtins/string-trim.tq
+*/
+function stringTrimLoop(str, startIndex, endIndex, increment) {
+  let index = startIndex;
+
+  while (true) {
+    if (index == endIndex) {
+      return index;
+    }
+
+    const char = str[index];
+    if (!IsWhiteSpaceOrLineTerminator(char)) {
+      return index;
+    }
+
+    index += increment;
+  }
+}
+
+function stringTrimBody(str, leftTrim) {
+  const stringLength = str.length;
+  let startIndex = 0;
+  let endIndex = stringLength - 1;
+  if(leftTrim) {
+    startIndex = stringTrimLoop(str, startIndex, stringLength, 1);
+    if(startIndex == stringLength)
+      return "";
+    }
+    else {
+    endIndex = stringTrimLoop(str, endIndex, stringLength, -1);
+    if(endIndex == -1)
+      return "";
+  }
+
+  return str.substr(startIndex, endIndex + 1);
+}
+
+function newTrimCode(str) {
+  str = stringTrimBody(str, true);
+  str = stringTrimBody(str, false);
+
+  return str;
 }
 
 /*
@@ -34,9 +88,9 @@ function runTrim(string, trim) {
 
 export function redosAttack(n) {
   const irregularString = buildIrregularString(n);
-  let result = `n = ${n} : `;
-  result += `Old Trim: ${runTrim(irregularString, oldTrim)}`;
-  result += " | ";
-  result += `New Trim: ${runTrim(irregularString, newTrim)}`;
+  let result = `n = ${n}: \n`;
+  result += `\t Old Trim: ${runTrim(irregularString, oldTrim)}s\n`;
+  result += `\t New Trim using js function: ${runTrim(irregularString, newTrimJs)} ms\n`;
+  result += `\t New Trim using built function: ${runTrim(irregularString, newTrimCode)} ms\n`;
   console.log(result);
 }
