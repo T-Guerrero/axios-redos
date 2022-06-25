@@ -53,7 +53,7 @@ function stringTrimBody(str, leftTrim) {
   return str.substr(startIndex, endIndex + 1);
 }
 
-function newTrimCode(str) {
+function newTrimBuilt(str) {
   str = stringTrimBody(str, true);
   str = stringTrimBody(str, false);
 
@@ -89,8 +89,30 @@ function runTrim(string, trim) {
 export function redosAttack(n) {
   const irregularString = buildIrregularString(n);
   let result = `n = ${n}: \n`;
-  result += `\t Old Trim: ${runTrim(irregularString, oldTrim)}s\n`;
+  result += `\t Old Trim: ${runTrim(irregularString, oldTrim)}ms\n`;
   result += `\t New Trim using js function: ${runTrim(irregularString, newTrimJs)} ms\n`;
-  result += `\t New Trim using built function: ${runTrim(irregularString, newTrimCode)} ms\n`;
+  result += `\t New Trim using built function: ${runTrim(irregularString, newTrimBuilt)} ms\n`;
+  console.log(result);
+}
+
+export function redosAttackMinimalist(n, trimStrategy) {
+  let trimFunction;
+  switch(trimStrategy) {
+    case "old":
+      trimFunction = oldTrim;
+      break;
+    case "js":
+      trimFunction = newTrimJs;
+      break;
+    case "built":
+      trimFunction = newTrimBuilt;
+      break;
+    default:
+      console.log("[ERROR] Wrong trim strategy! Run 'node test.js' to see all strategies available.");
+      return;
+  }
+
+  const irregularString = buildIrregularString(n);
+  const result = runTrim(irregularString, trimFunction);
   console.log(result);
 }
