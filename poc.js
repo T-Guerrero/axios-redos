@@ -43,8 +43,8 @@ function stringTrimBody(str, leftTrim) {
     startIndex = stringTrimLoop(str, startIndex, stringLength, 1);
     if(startIndex == stringLength)
       return "";
-    }
-    else {
+  }
+  else {
     endIndex = stringTrimLoop(str, endIndex, stringLength, -1);
     if(endIndex == -1)
       return "";
