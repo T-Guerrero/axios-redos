@@ -1,7 +1,7 @@
 import { argv, exit } from 'node:process';
 import * as fs from 'fs';
 
-const MEASUREMENTS = 1000;
+const MEASUREMENTS = 100;
 
 if(argv.length < 2) {
   console.log("[ERROR] You must pass the file path!");
@@ -24,5 +24,5 @@ fs.readFile(filepath, 'utf8', (err, data) => {
 
   const left = timeUsage - 1.96*varianceEstimator;
   const right = timeUsage + 1.96*varianceEstimator;
-  console.log(`[${left} | ${right} ]`);
+  console.log(`${timeUsage} - [${left} | ${right} ]`);
 });

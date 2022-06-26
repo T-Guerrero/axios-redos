@@ -5,7 +5,7 @@ oldTrim implements old axios implementation.
 newTrimJs implements the current axios implementation.
 Src: https://github.com/axios/axios/commit/5b457116e31db0e88fede6c428e969e87f290929
 */
- function oldTrim(str) {
+function oldTrim(str) {
   return str.replace(/^\s*/, '').replace(/\s*$/, '');
 }
 function newTrimJs(str) {
