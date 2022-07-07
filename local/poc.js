@@ -45,7 +45,7 @@ function stringTrimBody(str, leftTrim) {
       return "";
   }
   else {
-    endIndex = stringTrimLoop(str, endIndex, stringLength, -1);
+    endIndex = stringTrimLoop(str, endIndex, -1, -1);
     if(endIndex == -1)
       return "";
   }

@@ -29,9 +29,9 @@ app.post("/", (req, res) => {
   console.log("Request recebida!");
   const time = runTrim(req.body.input, implementation);
   console.log(`Processamento finalizado! Tempo gasto: ${time/1000}s`);
-  res.status(200);
+  res.status(200).sendFile(__dirname + '/client.html');
 });
 
 app.listen(port, () => {
-  console.log(`server running at ${port}`);
+  console.log(`server running at ${port}!`);
 });
